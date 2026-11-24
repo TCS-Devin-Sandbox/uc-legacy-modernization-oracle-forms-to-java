@@ -98,7 +98,7 @@ The existing [assessment report](assessment-report.md) and the legacy `README.md
 | BR-LV-002 | Employee must be active (`-20001`); leave type must be active and the employee must have served at least `MIN_TENURE_DAYS` since hire (`-20203`). | `submit_leave_request` | PRESERVE |
 | BR-LV-003 | Start ≤ end (`-20210`; also DB check `CHK_LR_DATES`). | `submit_leave_request`, `03_leave_tables.sql` | PRESERVE |
 | BR-LV-004 | Start date may be at most 5 days in the past (`-20211`). | `submit_leave_request` | PRESERVE |
-| BR-LV-005 | Days = business days (Mon–Fri) minus `HOLIDAYS` for the employee's location or global holidays. Observed holidays are not handled. | `calculate_business_days` | PRESERVE; DECIDE on observed holidays (TD-022) |
+| BR-LV-005 | Days = business days (Mon–Fri) minus `HOLIDAYS` for the employee's location or global holidays. Observed holidays are not handled. | `calculate_business_days` | PRESERVE; DECIDE on observed holidays (TD-023) |
 | BR-LV-006 | Half-day request counts as 0.5 days regardless of the date range. | `submit_leave_request` | FIX (require start = end) |
 | BR-LV-007 | Zero business days → `-20212`. | `submit_leave_request` | PRESERVE |
 | BR-LV-008 | Overlap with an existing `PENDING` or `APPROVED` request (inclusive dates) → `-20202`. | `check_overlap` | PRESERVE |
@@ -111,7 +111,7 @@ The existing [assessment report](assessment-report.md) and the legacy `README.md
 | BR-LV-015 | Cancel: allowed for `PENDING` (release pending) or `APPROVED` (restore used); the form shows "Only pending or approved requests can be cancelled." and asks for confirmation. | `cancel_leave_request`, `HRMS_LEAVE.xml` | PRESERVE |
 | BR-LV-016 | Monthly accrual (1st of month): active employees meeting min tenure get `ACCRUAL_RATE`, capped at `MAX_BALANCE`; balance rows created on demand; logged in `LEAVE_ACCRUAL_LOG`; commits every 100 employees. Not idempotent: running twice accrues twice. | `run_monthly_accrual` | PRESERVE; FIX idempotency (Spring Batch job params) |
 | BR-LV-017 | Year-end carryover: remaining balance (excluding pending) capped at `CARRYOVER_MAX` becomes next year's `OPENING_BALANCE`; expiry date derived from `LEAVE_TYPES.CARRYOVER_EXPIRY` and stored in `CARRYOVER_EXPIRY_DT`. | `process_carryover` | PRESERVE |
-| BR-LV-018 | Expiry subtracts the full carried-over amount from `ADJUSTMENT`, even if part of it was already used. Source comments call out double subtraction on re-run (TD-023). | `expire_carryover` | DECIDE |
+| BR-LV-018 | Expiry subtracts the full carried-over amount from `ADJUSTMENT`, even if part of it was already used. Source comments call out double subtraction on re-run (TD-012; the assessment report files it under `process_carryover`, but the comment is on `expire_carryover`). | `expire_carryover` | DECIDE |
 | BR-LV-019 | Default list shows the current user's requests newest first, plus balances. | `HRMS_LEAVE.xml` | PRESERVE |
 | BR-LV-020 | Request status values `PENDING, APPROVED, REJECTED, CANCELLED, TAKEN` (`TAKEN` is never set by code); half-day period `AM`/`PM`; one balance row per (employee, type, year). | `03_leave_tables.sql` | PRESERVE |
 
