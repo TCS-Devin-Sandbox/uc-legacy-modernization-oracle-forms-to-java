@@ -21,7 +21,7 @@ The existing [assessment report](assessment-report.md) and the legacy `README.md
 | Forms referenced but missing | — | `HRMS_REPORTS`, `HRMS_ADMIN` (opened from menu), `HRMS_DEPARTMENT`, LOV/toolbar modules |
 | PL/SQL packages | 12 | 11 with bodies (`PKG_AUDIT`, `PKG_COMMON`, `PKG_EMPLOYEE`, `PKG_INTEGRATION`, `PKG_LEAVE`, `PKG_NOTIFICATION`, `PKG_PAYROLL`, `PKG_PERFORMANCE`, `PKG_REPORTING`, `PKG_SECURITY`, `PKG_VALIDATION`). No `PKG_DEPARTMENT`. |
 | Tables | 42 | 30 |
-| Triggers | 200+ | 5 DB triggers (`trg_employees.sql`, `trg_audit.sql`) + ~25 Forms triggers |
+| Triggers | 200+ | 6 DB triggers (3 in `trg_employees.sql`, 3 in `trg_audit.sql`) + 27 Forms triggers |
 | Scheduler jobs | DBMS_SCHEDULER jobs | No job definitions; only comments say "scheduled via DBMS_SCHEDULER" |
 | `USER_CREDENTIALS` table | referenced in `PKG_SECURITY` comment | not present |
 
