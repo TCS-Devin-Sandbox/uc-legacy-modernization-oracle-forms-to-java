@@ -47,7 +47,7 @@ This document captures the assessment findings for the Oracle Forms 11g/12c HR M
 | TD-012 | Data Integrity | PKG_LEAVE.process_carryover | Double-subtraction if run twice | Incorrect leave balances |
 | TD-013 | Performance | PKG_PAYROLL (cursor loop) | Row-by-row processing instead of bulk collect | Slow payroll runs |
 | TD-014 | Performance | VW_ORG_HIERARCHY | Recursive CONNECT BY with >500 employees | Timeout on org chart |
-| TD-015 | Maintainability | PKG_EMPLOYEE ↔ PKG_PAYROLL | Circular package dependency | Compilation order issues |
+| TD-015 | Maintainability | PKG_EMPLOYEE → PKG_PAYROLL | Declared circular dependency; the code only has PKG_EMPLOYEE → PKG_PAYROLL (see [dependency-map.md](dependency-map.md)) | Compilation order issues |
 
 ### Medium (Address Opportunistically)
 
@@ -64,6 +64,8 @@ This document captures the assessment findings for the Oracle Forms 11g/12c HR M
 
 ## Dependency Map
 
+Detailed, source-verified maps (forms, packages, tables, triggers, jobs, interfaces) are in [dependency-map.md](dependency-map.md); rules are in [business-rules-catalog.md](business-rules-catalog.md).
+
 ```
 HRMS_LOGIN ──→ PKG_SECURITY
      │
@@ -71,7 +73,7 @@ HRMS_LOGIN ──→ PKG_SECURITY
 HRMS_MENU ──→ PKG_SECURITY
      │
      ├──→ HRMS_EMPLOYEE ──→ PKG_EMPLOYEE ──→ PKG_COMMON, PKG_AUDIT
-     │         │                    ↕ (circular)
+     │         │                    ↓ (one-way in code)
      │         │              PKG_PAYROLL ──→ PKG_COMMON, PKG_AUDIT
      │         │
      │         └──→ PKG_VALIDATION
